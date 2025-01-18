@@ -1,6 +1,6 @@
-local RobloxClasses = require(game.ReplicatedStorage.RobloxClasses)
 
-local Rayfield = loadstring(RobloxClasses:HttpGet('https://sirius.menu/rayfield'))()
+
+local Rayfield = loadstring(Game:HttpGet('https://sirius.menu/rayfield'))()
 
 
 -- Variables for controlling walk speed
@@ -79,7 +79,7 @@ local SpeedSlider = Tab:CreateSlider({
    Callback = function(Value) -- Corrected
       walkSpeedValue = Value
       if WalktoggleEnabled then -- Check if the toggle is enabled
-         local player = RobloxClasses.Players.LocalPlayer
+         local player = Game.Players.LocalPlayer
          local character = player.Character or player.CharacterAdded:Wait()
          local humanoid = character:FindFirstChildOfClass("Humanoid")
          if humanoid then
@@ -96,7 +96,7 @@ local SpeedToggle = Tab:CreateToggle({
    Flag = "Toggle1",
    Callback = function(Value) -- Corrected
       WalktoggleEnabled = Value -- Update toggle state
-      local player = RobloxClasses.Players.LocalPlayer
+      local player = Game.Players.LocalPlayer
       local character = player.Character or player.CharacterAdded:Wait()
       local humanoid = character:FindFirstChildOfClass("Humanoid")
       if humanoid then
@@ -124,7 +124,7 @@ local JumpSlider = Tab:CreateSlider({
    Callback = function(Value) -- Corrected
       JumpHeightValue = Value
       if JumptoggleEnabled then -- Check if the toggle is enabled
-         local player = RobloxClasses.Players.LocalPlayer
+         local player = Game.Players.LocalPlayer
          local character = player.Character or player.CharacterAdded:Wait()
          local humanoid = character:FindFirstChildOfClass("Humanoid")
          if humanoid then
@@ -141,7 +141,7 @@ local JumpToggle = Tab:CreateToggle({
    Flag = "Toggle2",
    Callback = function(Value) -- Corrected
       JumptoggleEnabled = Value -- Update toggle state
-      local player = RobloxClasses.Players.LocalPlayer
+      local player = Game.Players.LocalPlayer
       local character = player.Character or player.CharacterAdded:Wait()
       local humanoid = character:FindFirstChildOfClass("Humanoid")
       if humanoid then
