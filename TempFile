@@ -1,0 +1,66 @@
+-- Player Teleport Section
+local TeleportSection = Tab:CreateSection("Player Teleport")
+
+-- Toggle for enabling teleportation
+local TeleportToggle = Tab:CreateToggle({
+    Name = "Enable Teleportation",
+    CurrentValue = false,
+    Flag = "TeleportToggle",
+    Callback = function(Value)
+        teleportEnabled = Value
+    end,
+})
+
+-- Dropdown for selecting player to teleport to
+local playerList = {} -- Store a list of players
+for _, player in pairs(Game.Players:GetPlayers()) do
+    table.insert(playerList, player.Name)
+end
+
+local TeleportDropdown = Tab:CreateDropdown({
+    Name = "Select Player",
+    Options = playerList,
+    CurrentOption = playerList[1], -- Default to first player in the list
+    Flag = "TeleportDropdown",
+    Callback = function(Value)
+        selectedPlayer = Game.Players:FindFirstChild(Value)
+    end,
+})
+
+-- Teleport Function
+local function teleportToPlayer(targetPlayer)
+    local player = Game.Players.LocalPlayer
+    if targetPlayer and targetPlayer.Character then
+        local targetPos = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if targetPos and humanoidRootPart then
+            humanoidRootPart.CFrame = targetPos.CFrame -- Teleport to target player's position
+        end
+    end
+end
+
+-- Teleportation logic (activated when the player toggles and selects a player)
+game:GetService("RunService").Heartbeat:Connect(function()
+    if teleportEnabled and selectedPlayer then
+        teleportToPlayer(selectedPlayer)
+    end
+end)
+
+-- Player Teleport Toggle Button
+local TeleportButton = Tab:CreateButton({
+    Name = "Teleport Now",
+    Flag = "TeleportButton",
+    Callback = function()
+        if teleportEnabled and selectedPlayer then
+            teleportToPlayer(selectedPlayer)
+        else
+            Rayfield:Notify({
+                Title = "Error",
+                Content = "Teleportation is disabled or no player selected.",
+                Duration = 3,
+                Image = 4483362458,
+            })
+        end
+    end,
+}
