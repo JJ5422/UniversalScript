@@ -64,3 +64,80 @@ local TeleportButton = Tab:CreateButton({
         end
     end,
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Infinite Health (God Mode) Section
+local GodModeToggle = Tab:CreateToggle({
+    Name = "Enable Infinite Health (God Mode)",
+    CurrentValue = false,
+    Flag = "GodModeToggle",
+    Callback = function(Value)
+        if Value then
+            -- Enable Infinite Health
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                -- Ensure the health stays at max
+                humanoid.Health = humanoid.MaxHealth
+                humanoid.HealthChanged:Connect(function()
+                    if humanoid.Health < humanoid.MaxHealth then
+                        humanoid.Health = humanoid.MaxHealth
+                    end
+                end)
+            end
+        else
+            -- Disable Infinite Health
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.HealthChanged:Disconnect() -- Disconnect to stop the constant resetting
+            end
+        end
+    end,
+})
+
+-- Create an infinite health loop to keep player's health full
+game:GetService("RunService").Heartbeat:Connect(function()
+    if GodModeToggle.CurrentValue then
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            -- Reset health to max if it ever goes below max health
+            if humanoid.Health < humanoid.MaxHealth then
+                humanoid.Health = humanoid.MaxHealth
+            end
+        end
+    end
+end)
